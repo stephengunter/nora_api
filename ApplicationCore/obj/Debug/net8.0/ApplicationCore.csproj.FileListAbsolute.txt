@@ -1,0 +1,16 @@
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.csproj.AssemblyReference.cache
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.GeneratedMSBuildEditorConfig.editorconfig
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.AssemblyInfoInputs.cache
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.AssemblyInfo.cs
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.csproj.CoreCompileInputs.cache
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.sourcelink.json
+/home/stephen/repos/csharp/nora_api/ApplicationCore/bin/Debug/net8.0/ApplicationCore.deps.json
+/home/stephen/repos/csharp/nora_api/ApplicationCore/bin/Debug/net8.0/ApplicationCore.dll
+/home/stephen/repos/csharp/nora_api/ApplicationCore/bin/Debug/net8.0/ApplicationCore.pdb
+/home/stephen/repos/csharp/nora_api/ApplicationCore/bin/Debug/net8.0/Infrastructure.dll
+/home/stephen/repos/csharp/nora_api/ApplicationCore/bin/Debug/net8.0/Infrastructure.pdb
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.csproj.CopyComplete
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.dll
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/refint/ApplicationCore.dll
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ApplicationCore.pdb
+/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/Debug/net8.0/ref/ApplicationCore.dll
