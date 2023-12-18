@@ -176,3 +176,10 @@
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Serilog.Sinks.File.dll
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/logs/log-20231214.json
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/logs/log-20231218.json
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/AutoMapper.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Swashbuckle.AspNetCore.Annotations.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Autofac.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Autofac.Extensions.DependencyInjection.dll

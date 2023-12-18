@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Auth;
+using ApplicationCore.Auth;
 using ApplicationCore.Models;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,19 +7,19 @@ using ApplicationCore.Authorization;
 using ApplicationCore.Helpers;
 
 
-namespace ApplicationCore.Services;
-public interface IJwtService
+namespace ApplicationCore.Auth;
+public interface IJwtFactory
 {
 	Task<AccessToken> GenerateEncodedTokenAsync(User user, IList<string>? roles, OAuth? oAuth = null);
 }
 
 
-public class JwtService : IJwtService
+public class JwtFactory : IJwtFactory
 {
 	private readonly IJwtTokenHandler _jwtTokenHandler;
 	private readonly JwtIssuerOptions _jwtOptions;
 
-	internal JwtService(IJwtTokenHandler jwtTokenHandler, IOptions<JwtIssuerOptions> jwtOptions)
+	internal JwtFactory(IJwtTokenHandler jwtTokenHandler, IOptions<JwtIssuerOptions> jwtOptions)
 	{
 		_jwtTokenHandler = jwtTokenHandler;
 		_jwtOptions = jwtOptions.Value;
