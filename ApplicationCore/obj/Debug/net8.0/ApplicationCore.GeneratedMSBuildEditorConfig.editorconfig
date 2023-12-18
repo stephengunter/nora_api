@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ApplicationCore
-build_property.ProjectDir = /home/stephen/repos/csharp/nora_api/ApplicationCore/
+build_property.ProjectDir = /home/stephen/Documents/repos/csharp/nora_api/ApplicationCore/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

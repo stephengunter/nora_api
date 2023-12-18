@@ -13,10 +13,10 @@ public class DefaultContext : IdentityDbContext<User>
 	{
 		base.OnModelCreating(builder);
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-		foreach (var property in builder.Model.GetEntityTypes()
-			.SelectMany(t => t.GetProperties())
-			.Where(p => p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?))
-      )
+		var types = builder.Model.GetEntityTypes()
+						.SelectMany(t => t.GetProperties())
+						.Where(p => p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?));
+		foreach (var property in types)
 		{
 			property.SetColumnType("timestamp without time zone");
 		}

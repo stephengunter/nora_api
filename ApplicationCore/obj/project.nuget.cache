@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wglFuUd81o22KaTWubGiPJSH/9Io70Ux77LRqYRMXFU87zPLThPqV8mEFMk049/nCibzQHs+KrZfOIz2zK4hJw==",
+  "dgSpecHash": "1tOKToU12CZKnLLsLH0KkR75vArNPvrOfHkp9fAoN/4a9T7yw9m04P+aRxv12kIgu1RlMxT7ELKnQhEPy/7Ylw==",
   "success": true,
-  "projectFilePath": "/home/stephen/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj",
+  "projectFilePath": "/home/stephen/Documents/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj",
   "expectedPackageFiles": [
     "/home/stephen/.nuget/packages/ardalis.specification/8.0.0/ardalis.specification.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/ardalis.specification.entityframeworkcore/8.0.0/ardalis.specification.entityframeworkcore.8.0.0.nupkg.sha512",
@@ -18,8 +18,13 @@
     "/home/stephen/.nuget/packages/microsoft.extensions.caching.abstractions/8.0.0/microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.extensions.caching.memory/8.0.0/microsoft.extensions.caching.memory.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/microsoft.extensions.configuration.binder/8.0.0/microsoft.extensions.configuration.binder.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.0/microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/microsoft.extensions.dependencymodel/8.0.0/microsoft.extensions.dependencymodel.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/microsoft.extensions.diagnostics.abstractions/8.0.0/microsoft.extensions.diagnostics.abstractions.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/microsoft.extensions.fileproviders.abstractions/8.0.0/microsoft.extensions.fileproviders.abstractions.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/microsoft.extensions.hosting.abstractions/8.0.0/microsoft.extensions.hosting.abstractions.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.extensions.identity.core/8.0.0/microsoft.extensions.identity.core.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.extensions.identity.stores/8.0.0/microsoft.extensions.identity.stores.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.extensions.logging/8.0.0/microsoft.extensions.logging.8.0.0.nupkg.sha512",
@@ -30,8 +35,21 @@
     "/home/stephen/.nuget/packages/microsoft.identitymodel.jsonwebtokens/7.0.3/microsoft.identitymodel.jsonwebtokens.7.0.3.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.identitymodel.logging/7.0.3/microsoft.identitymodel.logging.7.0.3.nupkg.sha512",
     "/home/stephen/.nuget/packages/microsoft.identitymodel.tokens/7.0.3/microsoft.identitymodel.tokens.7.0.3.nupkg.sha512",
+    "/home/stephen/.nuget/packages/npgsql/8.0.0/npgsql.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/npgsql.entityframeworkcore.postgresql/8.0.0/npgsql.entityframeworkcore.postgresql.8.0.0.nupkg.sha512",
     "/home/stephen/.nuget/packages/serilog/3.1.1/serilog.3.1.1.nupkg.sha512",
-    "/home/stephen/.nuget/packages/system.identitymodel.tokens.jwt/7.0.3/system.identitymodel.tokens.jwt.7.0.3.nupkg.sha512"
+    "/home/stephen/.nuget/packages/serilog.aspnetcore/8.0.0/serilog.aspnetcore.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/serilog.extensions.hosting/8.0.0/serilog.extensions.hosting.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/serilog.extensions.logging/8.0.0/serilog.extensions.logging.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/serilog.formatting.compact/2.0.0/serilog.formatting.compact.2.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/serilog.settings.configuration/8.0.0/serilog.settings.configuration.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/serilog.sinks.console/5.0.0/serilog.sinks.console.5.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/serilog.sinks.debug/2.0.0/serilog.sinks.debug.2.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/serilog.sinks.file/5.0.0/serilog.sinks.file.5.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/system.diagnostics.diagnosticsource/8.0.0/system.diagnostics.diagnosticsource.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/system.identitymodel.tokens.jwt/7.0.3/system.identitymodel.tokens.jwt.7.0.3.nupkg.sha512",
+    "/home/stephen/.nuget/packages/system.text.encodings.web/8.0.0/system.text.encodings.web.8.0.0.nupkg.sha512",
+    "/home/stephen/.nuget/packages/system.text.json/8.0.0/system.text.json.8.0.0.nupkg.sha512"
   ],
   "logs": []
 }

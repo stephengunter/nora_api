@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/stephen/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj": {}
+    "/home/stephen/Documents/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj": {}
   },
   "projects": {
-    "/home/stephen/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj": {
+    "/home/stephen/Documents/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/stephen/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj",
+        "projectUniqueName": "/home/stephen/Documents/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj",
         "projectName": "ApplicationCore",
-        "projectPath": "/home/stephen/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj",
+        "projectPath": "/home/stephen/Documents/repos/csharp/nora_api/ApplicationCore/ApplicationCore.csproj",
         "packagesPath": "/home/stephen/.nuget/packages/",
-        "outputPath": "/home/stephen/repos/csharp/nora_api/ApplicationCore/obj/",
+        "outputPath": "/home/stephen/Documents/repos/csharp/nora_api/ApplicationCore/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/stephen/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/stephen/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj": {
-                "projectPath": "/home/stephen/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj"
+              "/home/stephen/Documents/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj": {
+                "projectPath": "/home/stephen/Documents/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj"
               }
             }
           }
@@ -54,9 +54,13 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
-            "Serilog": {
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[8.0.0, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
@@ -79,18 +83,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/stephen/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj": {
+    "/home/stephen/Documents/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/stephen/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj",
+        "projectUniqueName": "/home/stephen/Documents/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "/home/stephen/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj",
+        "projectPath": "/home/stephen/Documents/repos/csharp/nora_api/Infrastructure/Infrastructure.csproj",
         "packagesPath": "/home/stephen/.nuget/packages/",
-        "outputPath": "/home/stephen/repos/csharp/nora_api/Infrastructure/obj/",
+        "outputPath": "/home/stephen/Documents/repos/csharp/nora_api/Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/stephen/.nuget/NuGet/NuGet.Config"
@@ -138,7 +142,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
