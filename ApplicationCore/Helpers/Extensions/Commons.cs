@@ -16,7 +16,7 @@ public static class CommonHelpers
 		return value;
 	}
 
-	public static bool ToBoolean(this string str)
+	public static bool ToBoolean(this string? str)
 	{
 		if (String.IsNullOrEmpty(str)) return false;
 

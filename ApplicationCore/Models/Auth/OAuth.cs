@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Entities;
 using System.ComponentModel.DataAnnotations;
+using ApplicationCore.Consts;
 
 namespace ApplicationCore.Models;
 
@@ -21,10 +22,4 @@ public class OAuth : EntityBase
 
 	[Required]
 	public virtual User? User { get; set; }
-}
-
-public enum OAuthProvider
-{
-	Google = 0,
-	Unknown = -1
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using ApplicationCore.Models;
 using ApplicationCore.Settings;
 using ApplicationCore.Consts;
+using ApplicationCore.Helpers;
 using ApplicationCore.DI;
 
 Log.Logger = new LoggerConfiguration()
@@ -63,7 +64,6 @@ try
 
 	builder.Services.AddControllers();
 	builder.Services.AddSwagger(Configuration);
-	//builder.Services.AddSwaggerGen();
 
 	var app = builder.Build();
 	AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -71,20 +71,24 @@ try
 	app.UseSerilogRequestLogging(); 
 
 	if (app.Environment.IsDevelopment())
-	{        
-		// Seed Database
-	   using (var scope = app.Services.CreateScope())
+	{
+		if(Configuration[$"{SettingsKeys.Developing}:SeedDatabase"].ToBoolean())
 		{
-			var services = scope.ServiceProvider;
-			try
+			// Seed Database
+			using (var scope = app.Services.CreateScope())
 			{
-				await SeedData.EnsureSeedData(services, Configuration);
-			}
-			catch (Exception ex)
-			{
-				Log.Fatal(ex, "SeedData Error");
+				var services = scope.ServiceProvider;
+				try
+				{
+					await SeedData.EnsureSeedData(services, Configuration);
+				}
+				catch (Exception ex)
+				{
+					Log.Fatal(ex, "SeedData Error");
+				}
 			}
 		}
+		
 		app.UseSwagger();
 		app.UseSwaggerUI();
 	}
@@ -93,8 +97,9 @@ try
 		app.UseHttpsRedirection();
 	}
 	
-
-	app.UseAuthorization();
+	app.UseCors();
+	app.UseAuthentication();
+   app.UseAuthorization();
 
 	app.MapControllers();
 	app.Run();

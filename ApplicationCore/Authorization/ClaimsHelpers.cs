@@ -38,19 +38,9 @@ public static class ClaimsHelpers
 			new Claim(JwtClaimIdentifiers.Rol, JwtClaims.ApiAccess)
 		});
 	}
-
-	public static string GetUserId(this ClaimsPrincipal cp)
+	public static OAuthProvider Provider(this IEnumerable<Claim> claims)
 	{
-		var entry = cp.Claims.First(c => c.Type == "id");
-		if(entry is null) return String.Empty;
-		return entry.Value;
-	}
-
-	public static OAuthProvider GetOAuthProvider(this ClaimsPrincipal cp)
-	{
-		if (cp == null) return OAuthProvider.Unknown;
-		var c = cp.Claims.FirstOrDefault(c => c.Type == JwtClaimIdentifiers.Provider);
-		string providerName = c is null ? "" :  c.Value;
+		string providerName = claims.Find(JwtClaimIdentifiers.Provider)?.Value ?? string.Empty;
 
 		OAuthProvider provider = OAuthProvider.Unknown;
 		if (Enum.TryParse(providerName, true, out provider))
@@ -60,59 +50,30 @@ public static class ClaimsHelpers
 		}
 		else return OAuthProvider.Unknown;
 	}
+
+	public static Claim? Find(this IEnumerable<Claim> claims, string val) 
+		=> claims.First(c => c.Type.EqualTo(val));
 	public static string UserId(this IEnumerable<Claim> claims)
-	{
-		var entity = claims.FirstOrDefault(c => c.Type == JwtClaimIdentifiers.Id);
-		if (entity == null) return string.Empty;
-
-		return entity.Value;
-	}
-
+		=> claims.Find(JwtClaimIdentifiers.Id)?.Value ?? string.Empty;
+	
 	public static IEnumerable<string> Roles(this IEnumerable<Claim> claims)
-	{
-		var entity = claims.FirstOrDefault(c => c.Type == JwtClaimIdentifiers.Roles);
-		if (entity == null) return new List<string>();
-
-		return entity.Value.SplitToList();
-	}
+		=> claims.Find(JwtClaimIdentifiers.Roles)?.Value.SplitToList() 
+			?? new List<string>();		
 
 	public static string UserName(this IEnumerable<Claim> claims)
-	{
-		var entity = claims.FirstOrDefault(c => c.Type == JwtClaimIdentifiers.Sub);
-		if (entity == null) return string.Empty;
-
-		return entity.Value;
-	}
+		=> claims.Find(JwtClaimIdentifiers.Sub)?.Value ?? string.Empty;
 
 	public static bool IsDev(this IEnumerable<Claim> claims)
 	{
-		var roles = Roles(claims);
-		if (roles.IsNullOrEmpty()) return false;
+		if(Roles(claims).IsNullOrEmpty()) return false;
 
-		string devRoleName = AppRoles.Dev.ToString();
-		var match = roles.FirstOrDefault(r => r.EqualTo(devRoleName));
-
-		return match != null;
+		return Roles(claims).First(r => r.EqualTo(AppRoles.Dev.ToString())) != null;
 	}
 	public static bool IsBoss(this IEnumerable<Claim> claims)
 	{
-		var roles = Roles(claims);
-		if (roles.IsNullOrEmpty()) return false;
+		if(Roles(claims).IsNullOrEmpty()) return false;
 
-		string bossRoleName = AppRoles.Boss.ToString();
-		var match = roles.FirstOrDefault(r => r.EqualTo(bossRoleName));
-
-		return match != null;
-	}
-	public static bool IsSubscriber(this IEnumerable<Claim> claims)
-	{
-		var roles = Roles(claims);
-		if (roles.IsNullOrEmpty()) return false;
-
-		string subscriberRoleName = AppRoles.Subscriber.ToString();
-		var match = roles.FirstOrDefault(r => r.EqualTo(subscriberRoleName));
-
-		return match != null;
+		return Roles(claims).First(r => r.EqualTo(AppRoles.Boss.ToString())) != null;
 	}
 
 }

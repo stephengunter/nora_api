@@ -183,3 +183,11 @@
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Swashbuckle.AspNetCore.Annotations.dll
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Autofac.dll
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Autofac.Extensions.DependencyInjection.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Google.Apis.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Google.Apis.Auth.PlatformServices.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Google.Apis.Auth.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Google.Apis.Core.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/System.Management.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/runtimes/win/lib/net7.0/System.Management.dll
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/logs/log-20231220.json

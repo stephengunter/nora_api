@@ -8,23 +8,13 @@ public class HasPermissionHandler : AuthorizationHandler<HasPermissionRequiremen
    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, HasPermissionRequirement requirement)
    {
       Permissions permissione = requirement.Permission;
-
-      if (permissione == Permissions.Subscriber)
-      {
-         if(context.User.Claims.IsSubscriber())
-         {
-            context.Succeed(requirement);
-            return Task.CompletedTask;
-         } 
-      }
-      else if(permissione == Permissions.Admin)
+      if(permissione == Permissions.Admin)
       {
          if(context.User.Claims.IsBoss() || context.User.Claims.IsDev())
          {
             context.Succeed(requirement);
             return Task.CompletedTask;
-         }
-         
+         }         
       }
 
       context.Fail();
