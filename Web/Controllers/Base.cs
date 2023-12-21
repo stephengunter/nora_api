@@ -3,6 +3,8 @@ using ApplicationCore.Settings;
 using Microsoft.AspNetCore.Cors;
 using Web.Models;
 using ApplicationCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Controllers;
 
@@ -22,7 +24,7 @@ public abstract class BaseApiController : BaseController
 
 //[EnableCors("Admin")]
 [Route("admin/[controller]")]
-//Authorize(Policy = "Admin")]
+//[Authorize(Policy = "Admin")]
 public class BaseAdminController : BaseController
 {
    protected void ValidateRequest(AdminRequest model, AdminSettings adminSettings)

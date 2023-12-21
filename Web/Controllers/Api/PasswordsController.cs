@@ -19,23 +19,32 @@ public class PasswordsController : BaseApiController
       _usersService = usersService;
    }
 
-   // [HttpPut("pw/{id}")]
-   // public async Task<IActionResult> SetPassword(string id, SetPasswordRequest model)
-   // {
-   //    var user = await _usersService.FindByIdAsync(id);
-   //    if(user == null) return NotFound();
+   [HttpPost]
+   public async Task<ActionResult> Store(SetPasswordRequest request)
+   {
+      string id = "008acdba-5c0a-4d3a-90a2-3b31ad6d1d65";
+      var user = await _usersService.FindByIdAsync(id);
+      if(user == null) return NotFound();
 
-   //    bool hasPassword = await _usersService.HasPasswordAsync(user);
+      if(String.IsNullOrEmpty(request.Password)) ModelState.AddModelError("password", "Password Can Not Be Empty.");
+      if(!ModelState.IsValid) return BadRequest(ModelState);
 
-   //    if(String.IsNullOrEmpty(model.Password)) ModelState.AddModelError("password", "password can not be empty!");
-   //    if(hasPassword && String.IsNullOrEmpty(model.Token)) ModelState.AddModelError("token", "token can not be empty!");
+      await _usersService.AddPasswordAsync(user, request.Password);
+      return Ok();
+   }
 
-   //    bool isValid = await _usersService.CheckPasswordAsync(user, model.Password);
-   //    if(!isValid) ModelState.AddModelError("password", "password is not valid!");
+   [HttpPut("{id}")]
+   public async Task<IActionResult> Update(string id, SetPasswordRequest request)
+   {
+      var user = await _usersService.FindByIdAsync(id);
+      if(user == null) return NotFound();
 
-   //    if(!ModelState.IsValid) return BadRequest(ModelState);
+      if(String.IsNullOrEmpty(request.Password)) ModelState.AddModelError("password", "Password Can Not Be Empty.");      
+      if(String.IsNullOrEmpty(request.Token)) ModelState.AddModelError("token", "token can not be empty!");
+      if(!ModelState.IsValid) return BadRequest(ModelState);
 
-   //    return NoContent();
-   // }
+      await _usersService.ChangePasswordAsync(user, request.Token, request.Password);
+      return NoContent();
+   }
 
 }

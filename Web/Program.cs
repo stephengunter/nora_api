@@ -10,6 +10,7 @@ using ApplicationCore.Settings;
 using ApplicationCore.Consts;
 using ApplicationCore.Helpers;
 using ApplicationCore.DI;
+using Web.Filters;
 
 Log.Logger = new LoggerConfiguration()
 	.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
@@ -56,6 +57,9 @@ try
 	.AddDefaultTokenProviders();
 	#endregion
 
+	#region AddFilters
+	builder.Services.AddScoped<DevelopmentOnlyFilter>();
+	#endregion
 	
 	builder.Services.AddJwtBearer(Configuration);
 	builder.Services.AddAuthorizationPolicy();

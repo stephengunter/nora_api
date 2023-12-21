@@ -5,6 +5,7 @@ public class AdminRequest
 {
 	public string Key { get; set; } = String.Empty;
 	public string? Cmd { get; set; }
+	public string? Token { get; set; }
 	public string? Data { get; set; }
 }
 public class AdminFileRequest : AdminRequest

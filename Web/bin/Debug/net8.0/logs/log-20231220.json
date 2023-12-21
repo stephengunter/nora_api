@@ -461,3 +461,11 @@
 {"@t":"2023-12-20T08:19:48.7199211Z","@mt":"HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms","@r":["502.0872"],"@tr":"59c42c1e03319b6dd0e6b987db19a19a","@sp":"00d989167ad41d27","RequestMethod":"GET","RequestPath":"/tests/ATests","StatusCode":200,"Elapsed":502.087191,"SourceContext":"Serilog.AspNetCore.RequestLoggingMiddleware","RequestId":"0HN016HN56TF6:00000001","ConnectionId":"0HN016HN56TF6"}
 {"@t":"2023-12-20T09:22:21.5720175Z","@mt":"Application is shutting down...","SourceContext":"Microsoft.Hosting.Lifetime"}
 {"@t":"2023-12-20T09:22:22.2577968Z","@mt":"finally"}
+{"@t":"2023-12-20T09:32:33.1687049Z","@mt":"Now listening on: {address}","address":"http://localhost:5067","EventId":{"Id":14,"Name":"ListeningOnAddress"},"SourceContext":"Microsoft.Hosting.Lifetime"}
+{"@t":"2023-12-20T09:32:33.2482786Z","@mt":"Application started. Press Ctrl+C to shut down.","SourceContext":"Microsoft.Hosting.Lifetime"}
+{"@t":"2023-12-20T09:32:33.2514556Z","@mt":"Hosting environment: {EnvName}","EnvName":"Development","SourceContext":"Microsoft.Hosting.Lifetime"}
+{"@t":"2023-12-20T09:32:33.2569450Z","@mt":"Content root path: {ContentRoot}","ContentRoot":"/home/stephen/Documents/repos/csharp/nora_api/Web","SourceContext":"Microsoft.Hosting.Lifetime"}
+{"@t":"2023-12-20T09:32:49.9463044Z","@mt":"HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms","@r":["171.6394"],"@tr":"b0fad3f2912f0c29b44d0c25575d80ea","@sp":"6310cbf2cc20d19f","RequestMethod":"GET","RequestPath":"/swagger/index.html","StatusCode":200,"Elapsed":171.639425,"SourceContext":"Serilog.AspNetCore.RequestLoggingMiddleware","RequestId":"0HN017QGRR8VV:00000001","ConnectionId":"0HN017QGRR8VV"}
+{"@t":"2023-12-20T09:32:51.6788828Z","@mt":"HTTP {RequestMethod} {RequestPath} responded {StatusCode} in {Elapsed:0.0000} ms","@r":["234.3583"],"@tr":"6670d90178267b3f7870832f78c47b1f","@sp":"2f1947f4d2f1ea24","RequestMethod":"GET","RequestPath":"/swagger/v1/swagger.json","StatusCode":200,"Elapsed":234.358331,"SourceContext":"Serilog.AspNetCore.RequestLoggingMiddleware","RequestId":"0HN017QGRR8VV:00000002","ConnectionId":"0HN017QGRR8VV"}
+{"@t":"2023-12-20T09:33:00.0874826Z","@mt":"Application is shutting down...","SourceContext":"Microsoft.Hosting.Lifetime"}
+{"@t":"2023-12-20T09:33:00.1448735Z","@mt":"finally"}
