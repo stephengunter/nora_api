@@ -1,10 +1,13 @@
 using System.Runtime.CompilerServices;
+using ApplicationCore.Authorization;
+using ApplicationCore.Consts;
 using ApplicationCore.Helpers;
 using ApplicationCore.Services;
 using ApplicationCore.Settings;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Web.Models;
 
 namespace Web.Controllers.Tests;
 
@@ -12,29 +15,24 @@ public class ATestsController : BaseTestController
 {
    private readonly IUsersService _usersService;
    private readonly AppSettings _appSettings;
-   private readonly AdminSettings _adminSettings; 
+   private readonly IJwtTokenService _jwtTokenService;
+	private readonly IOAuthService _oAuthService;
 
    public ATestsController(IUsersService usersService, IOptions<AppSettings> appSettings, 
-      IOptions<AdminSettings> adminSettings)
+      IOAuthService oAuthService, IJwtTokenService jwtTokenService)
    {
       _usersService = usersService;
       _appSettings = appSettings.Value;
-      _adminSettings = adminSettings.Value;
+      _jwtTokenService = jwtTokenService;
+		_oAuthService = oAuthService;
    }
 
-   [HttpGet("")]
-   public async Task<ActionResult> Index()
+   [HttpPost]
+   public async Task<ActionResult> RefreshToken(RefreshTokenRequest request)
    {
-      // var adminUser = await _usersService.FindByEmailAsync(_adminSettings.Email);
-      // if (adminUser == null) 
-      // {
-      //    ModelState.AddModelError("user", "User Not Found");
-      //    return BadRequest();
-      // }
-      // bool result = await _usersService.HasPasswordAsync(adminUser);
-      //User.Claims.UserName();
-      if(User.Claims.IsNullOrEmpty()) return Ok("no");
-		return Ok(User.Claims.First(c => c.Type == "id")?.Value ?? String.Empty);
+      var cp = _jwtTokenService.ResolveClaimsFromToken(request.AccessToken);
+		OAuthProvider provider = cp.Claims.Provider();
+      return Ok(provider);
    }
 
    [HttpGet("version")]

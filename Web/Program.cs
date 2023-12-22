@@ -11,6 +11,7 @@ using ApplicationCore.Consts;
 using ApplicationCore.Helpers;
 using ApplicationCore.DI;
 using Web.Filters;
+using System.Text.Json.Serialization;
 
 Log.Logger = new LoggerConfiguration()
 	.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
@@ -66,7 +67,11 @@ try
 	builder.Services.AddCorsPolicy(Configuration);
 	builder.Services.AddDtoMapper();
 
-	builder.Services.AddControllers();
+	builder.Services.AddControllers()
+	.AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
 	builder.Services.AddSwagger(Configuration);
 
 	var app = builder.Build();

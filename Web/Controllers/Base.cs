@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Web.Controllers;
 
 [ApiController]
+[Route("[controller]")]
 public abstract class BaseController : ControllerBase
 {
    protected string RemoteIpAddress => HttpContext.Connection.RemoteIpAddress is null ? "" : HttpContext.Connection.RemoteIpAddress.ToString();

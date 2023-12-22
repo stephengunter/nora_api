@@ -192,3 +192,4 @@
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/runtimes/win/lib/net7.0/System.Management.dll
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/logs/log-20231220.json
 /home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/logs/log-20231221.json
+/home/stephen/Documents/repos/csharp/nora_api/Web/bin/Debug/net8.0/logs/log-20231222.json

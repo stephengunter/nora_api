@@ -20,7 +20,6 @@ public class AuthController : BaseController
 	private readonly IJwtTokenService _jwtTokenService;
 	private readonly IOAuthService _oAuthService;
 
-
 	public AuthController(IOptions<AdminSettings> adminSettings, IUsersService usersService, 
 		IOAuthService oAuthService, IJwtTokenService jwtTokenService)
 	{
@@ -30,65 +29,72 @@ public class AuthController : BaseController
 		_oAuthService = oAuthService;
 	}
 
-	// [HttpPost("")]
-	// public async Task<ActionResult> Login([FromBody] OAuthLoginRequest model)
-	// {
-	// 	var user = _usersService.FindUserByPhone(model.Token);
-
-	// 	if (user == null)
-	// 	{
-	// 		ModelState.AddModelError("auth", "登入失敗.");
-	// 		return BadRequest(ModelState);
-	// 	}
-
-	// 	var roles = await _usersService.GetRolesAsync(user);
-
-	// 	var responseView = await _authService.CreateTokenAsync(RemoteIpAddress, user, roles);
-
-	// 	return Ok(responseView);;
-	// }
-
-	//POST api/auth/refreshtoken
-	[HttpPost("refreshtoken")]
-	public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest model)
+	[HttpPost]
+	public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
 	{
-		var cp = _jwtTokenService.ResolveClaimsFromToken(model.AccessToken);
-		if(cp is null)
-		{
-			throw new TokenResolveFailedException();
-		}
-		if(cp.Claims.IsNullOrEmpty())
-		{
-			throw new TokenResolveFailedException("Claims IsNullOrEmpty!");
-		}
+		ValidateRequest(request);
+		if(!ModelState.IsValid) return BadRequest(ModelState);
 
-		string userId = cp.Claims.UserId();
-		var oauthProvider = cp.Claims.Provider();
-		
-		var user = await _usersService.FindByIdAsync(userId);
+		var user = await _usersService.FindByEmailAsync(request.Username);
 		if(user is null)
 		{
-		   throw new RefreshTokenFailedException($"User NotFound By Id: {userId}");
+			ModelState.AddModelError("", "身分驗證失敗. 請重新登入.");
+			return BadRequest(ModelState);
 		}
-		await ValidateRequestAsync(model, user);
-		if (!ModelState.IsValid) return BadRequest(ModelState);
+
+		bool isValid = await _usersService.CheckPasswordAsync(user, request.Password);
+		if(!isValid)
+		{
+			ModelState.AddModelError("", "身分驗證失敗. 請重新登入.");
+			return BadRequest(ModelState);
+		}
 
 		var roles = await _usersService.GetRolesAsync(user);
-		var oauth = await _oAuthService.FindByProviderAsync(user, oauthProvider);
-		if(oauth is null)  throw new RefreshTokenFailedException($"OAuth NotFound By Provider: {oauthProvider.ToString()}");
+
+		var accessToken = await _jwtTokenService.CreateAccessTokenAsync(RemoteIpAddress, user, roles);
+		string refreshToken = await _jwtTokenService.CreateRefreshTokenAsync(RemoteIpAddress, user);
+
+		return new AuthResponse(accessToken.Token, accessToken.ExpiresIn, refreshToken);
+	}
+
+	
+	[HttpPut("{id}")]
+	public async Task<ActionResult<AuthResponse>> RefreshToken(string id, [FromBody] RefreshTokenRequest request)
+	{
+		var user = await _usersService.FindByIdAsync(id);
+		if(user is null) return NotFound();
+
+		var cp = _jwtTokenService.ResolveClaimsFromToken(request.AccessToken);
+		if(cp is null) throw new TokenResolveFailedException();
+		if(cp.Claims.IsNullOrEmpty()) throw new TokenResolveFailedException("Claims IsNullOrEmpty!");
+		if(cp.Claims.UserId() != id) throw new RefreshTokenFailedException($"User Id Not Equals To Put Id: {id}");
 		
+		await ValidateRequestAsync(request, user);
+		if (!ModelState.IsValid) return BadRequest(ModelState);		
+		
+		OAuth? oauth = null;
+		if(cp.Claims.Provider() != OAuthProvider.Unknown)
+		{
+			oauth = await _oAuthService.FindByProviderAsync(user, cp.Claims.Provider());
+			if(oauth is null)  throw new RefreshTokenFailedException($"OAuth NotFound By Provider: {cp.Claims.Provider().ToString()}");
+		}		
+		
+		var roles = await _usersService.GetRolesAsync(user);
 		var accessToken = await _jwtTokenService.CreateAccessTokenAsync(RemoteIpAddress, user, roles, oauth);
 		string refreshToken = await _jwtTokenService.CreateRefreshTokenAsync(RemoteIpAddress, user);
 
-		var response = new AuthResponse(accessToken.Token, accessToken.ExpiresIn, refreshToken);
-		return Ok(response);
+		return new AuthResponse(accessToken.Token, accessToken.ExpiresIn, refreshToken);
 
 	}
-
-	async Task ValidateRequestAsync(RefreshTokenRequest model, User user)
+	async Task ValidateRequestAsync(RefreshTokenRequest request, User user)
 	{
-		bool isValid = await _jwtTokenService.IsValidRefreshTokenAsync(model.RefreshToken, user);
+		bool isValid = await _jwtTokenService.IsValidRefreshTokenAsync(request.RefreshToken, user);
 		if(!isValid) ModelState.AddModelError("token", "身分驗證失敗. 請重新登入");
+	}
+	void ValidateRequest(LoginRequest request)
+	{
+		if(String.IsNullOrEmpty(request.Username)) ModelState.AddModelError("name", ValidationMeesages.Empty("name"));
+		if(String.IsNullOrEmpty(request.Password)) ModelState.AddModelError("password", ValidationMeesages.Empty("password"));
 	}
 
 

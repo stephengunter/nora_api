@@ -41,18 +41,12 @@ public static class ClaimsHelpers
 	public static OAuthProvider Provider(this IEnumerable<Claim> claims)
 	{
 		string providerName = claims.Find(JwtClaimIdentifiers.Provider)?.Value ?? string.Empty;
-
-		OAuthProvider provider = OAuthProvider.Unknown;
-		if (Enum.TryParse(providerName, true, out provider))
-		{
-			if (Enum.IsDefined(typeof(OAuthProvider), provider)) return provider;
-			else return OAuthProvider.Unknown;
-		}
-		else return OAuthProvider.Unknown;
+		
+		OAuthProvider provider;
+		if(!Enum.TryParse(providerName, true, out provider)) return OAuthProvider.Unknown;
+		return provider;
 	}
-
-	public static Claim? Find(this IEnumerable<Claim> claims, string val) 
-		=> claims.First(c => c.Type.EqualTo(val));
+	
 	public static string UserId(this IEnumerable<Claim> claims)
 		=> claims.Find(JwtClaimIdentifiers.Id)?.Value ?? string.Empty;
 	
@@ -75,5 +69,8 @@ public static class ClaimsHelpers
 
 		return Roles(claims).First(r => r.EqualTo(AppRoles.Boss.ToString())) != null;
 	}
+
+	static Claim? Find(this IEnumerable<Claim> claims, string val) 
+		=> claims.FirstOrDefault(c => c.Type.EqualTo(val));
 
 }
