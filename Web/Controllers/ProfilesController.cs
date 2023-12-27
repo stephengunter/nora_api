@@ -7,28 +7,32 @@ using Microsoft.Extensions.Options;
 using AutoMapper;
 using ApplicationCore.DtoMapper;
 using Web.Models;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
+using ApplicationCore.Authorization;
 
 namespace Web.Controllers.Api;
 
-public class ProfilesController : BaseApiController
+[EnableCors("Global")]
+[Authorize]
+public class ProfilesController : BaseController
 {
    private readonly IUsersService _usersService;
    private readonly IMapper _mapper;
 
-   public ProfilesController(IUsersService usersService, IOptions<AdminSettings> adminSettings,
-      IMapper mapper)
+   public ProfilesController(IUsersService usersService, IMapper mapper)
    {
       _usersService = usersService;
       _mapper = mapper;
    }
 
-   [HttpGet]
-   public async Task<ActionResult<UserViewModel>> Get()
+   [HttpGet("id")]
+   public async Task<ActionResult<UserViewModel>> Get(string id)
    {
-      string id = "008acdba-5c0a-4d3a-90a2-3b31ad6d1d65";
-
       var user = await _usersService.FindByIdAsync(id);
       if(user == null) return NotFound();
+      
+      CheckCurrentUser(user);
 
       var roles = await _usersService.GetRolesAsync(user);
       var model = user.MapViewModel(roles, _mapper);

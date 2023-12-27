@@ -12,6 +12,7 @@ using ApplicationCore.Helpers;
 using ApplicationCore.DI;
 using Web.Filters;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.Options;
 
 Log.Logger = new LoggerConfiguration()
 	.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
@@ -47,10 +48,11 @@ try
 	// Add services to the container.
 	string connectionString = Configuration.GetConnectionString("Default")!;
 	builder.Services.AddDbContext<DefaultContext>(options =>
-						options.UseNpgsql(connectionString));
+						//options.UseNpgsql(connectionString));
+						options.UseSqlServer(connectionString));
 
-	#region AddIdentity
-	builder.Services.AddIdentity<User, IdentityRole>(options =>
+   #region AddIdentity
+   builder.Services.AddIdentity<User, IdentityRole>(options =>
 	{
 		options.User.RequireUniqueEmail = true;
 	})

@@ -22,7 +22,7 @@ public interface IUsersService
 	#endregion
 
 	#region Store
-	Task<User> CreateAsync(string email, bool emailConfirmed);
+	Task<User> CreateAsync(User user);
 	Task UpdateAsync(User user);
 
 	#endregion
@@ -91,14 +91,8 @@ public class UsersService : IUsersService
 	#endregion
 
 	#region Store
-	public async Task<User> CreateAsync(string email, bool emailConfirmed)
+	public async Task<User> CreateAsync(User user)
 	{
-		var user = new User
-		{
-			Email = email,
-			UserName = email,
-			EmailConfirmed = emailConfirmed
-		};
 		var result = await _userManager.CreateAsync(user);
 		if (result.Succeeded) return user;
 

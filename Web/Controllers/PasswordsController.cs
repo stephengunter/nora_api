@@ -7,9 +7,11 @@ using Microsoft.Extensions.Options;
 using AutoMapper;
 using ApplicationCore.DtoMapper;
 using Web.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace Web.Controllers.Api;
 
+[EnableCors("Global")]
 public class PasswordsController : BaseApiController
 {
    private readonly IUsersService _usersService;
@@ -22,7 +24,7 @@ public class PasswordsController : BaseApiController
    [HttpPost]
    public async Task<ActionResult> Store(SetPasswordRequest request)
    {
-      string id = "008acdba-5c0a-4d3a-90a2-3b31ad6d1d65";
+      string id = "a906b84f-5825-4528-990b-bd7e6a3a6413";
       var user = await _usersService.FindByIdAsync(id);
       if(user == null) return NotFound();
 

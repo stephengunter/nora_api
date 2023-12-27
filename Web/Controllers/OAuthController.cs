@@ -4,9 +4,11 @@ using ApplicationCore.Models;
 using ApplicationCore.Services;
 using Google.Apis.Auth;
 using ApplicationCore.Consts;
+using Microsoft.AspNetCore.Cors;
 
 namespace Web.Controllers;
 
+[EnableCors("Global")]
 public class OAuthController : BaseController
 {
 	private readonly IUsersService _usersService;
@@ -30,8 +32,13 @@ public class OAuthController : BaseController
 
 		if (user == null)
 		{
-			bool emailConfirmed = true;
-			user = await _usersService.CreateAsync(payload.Email, emailConfirmed);
+         user = await _usersService.CreateAsync(new User
+         {
+            Email = payload.Email,
+            UserName = payload.Email,
+            Name = payload.Name,
+            EmailConfirmed = true
+         });
 		}
 
 		var oAuth = await _oauthService.FindByProviderAsync(user, OAuthProvider.Google);

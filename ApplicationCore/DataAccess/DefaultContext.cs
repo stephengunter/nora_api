@@ -9,18 +9,18 @@ public class DefaultContext : IdentityDbContext<User>
 	public DefaultContext(DbContextOptions<DefaultContext> options) : base(options)
 	{
 	}
-	protected override void OnModelCreating(ModelBuilder builder)
-	{
-		base.OnModelCreating(builder);
-		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-		var types = builder.Model.GetEntityTypes()
-						.SelectMany(t => t.GetProperties())
-						.Where(p => p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?));
-		foreach (var property in types)
-		{
-			property.SetColumnType("timestamp without time zone");
-		}
-	}
+	//protected override void OnModelCreating(ModelBuilder builder)
+	//{
+	//	base.OnModelCreating(builder);
+	//	builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+	//	var types = builder.Model.GetEntityTypes()
+	//					.SelectMany(t => t.GetProperties())
+	//					.Where(p => p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?));
+	//	foreach (var property in types)
+	//	{
+	//		property.SetColumnType("timestamp without time zone");
+	//	}
+	//}
 
 	#region Auth
 	public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();

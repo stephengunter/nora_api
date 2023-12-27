@@ -1,5 +1,4 @@
-using System.Runtime.CompilerServices;
-using ApplicationCore.Authorization;
+using ApplicationCore.Models;
 using ApplicationCore.Consts;
 using ApplicationCore.Helpers;
 using ApplicationCore.Services;
@@ -8,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Web.Models;
+using Azure.Core;
 
 namespace Web.Controllers.Tests;
 
@@ -18,21 +18,20 @@ public class ATestsController : BaseTestController
    private readonly IJwtTokenService _jwtTokenService;
 	private readonly IOAuthService _oAuthService;
 
-   public ATestsController(IUsersService usersService, IOptions<AppSettings> appSettings, 
-      IOAuthService oAuthService, IJwtTokenService jwtTokenService)
+   public ATestsController(IUsersService usersService, IOptions<AppSettings> appSettings)
    {
       _usersService = usersService;
       _appSettings = appSettings.Value;
-      _jwtTokenService = jwtTokenService;
-		_oAuthService = oAuthService;
    }
 
-   [HttpPost]
-   public async Task<ActionResult> RefreshToken(RefreshTokenRequest request)
+   [HttpGet]
+   public async Task<ActionResult> Index()
    {
-      var cp = _jwtTokenService.ResolveClaimsFromToken(request.AccessToken);
-		OAuthProvider provider = cp.Claims.Provider();
-      return Ok(provider);
+      var user = await _usersService.FindByEmailAsync("stephen@gmail.com");
+      if (user == null) return NotFound();
+
+      await _usersService.AddPasswordAsync(user, "79@Stephen");
+      return Ok();
    }
 
    [HttpGet("version")]

@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using ApplicationCore.Settings;
 using Microsoft.AspNetCore.Cors;
 using Web.Models;
-using ApplicationCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Filters;
+using ApplicationCore.Models;
 using Microsoft.AspNetCore.Authorization;
+using ApplicationCore.Authorization;
+using ApplicationCore.Exceptions;
 
 namespace Web.Controllers;
 
@@ -13,19 +14,25 @@ namespace Web.Controllers;
 public abstract class BaseController : ControllerBase
 {
    protected string RemoteIpAddress => HttpContext.Connection.RemoteIpAddress is null ? "" : HttpContext.Connection.RemoteIpAddress.ToString();
-    
+   
+   protected void CheckCurrentUser(User user)
+   {
+      string id = User.Claims.UserId();
+      if(String.IsNullOrEmpty(id)) throw new CurrentUserIdNotFoundException();
+      if(id != user.Id) throw new CurrentUserIdNotEqualToRequestUserIdException();
+   }
 }
 
-//[EnableCors("Api")]
+[EnableCors("Api")]
 [Route("api/[controller]")]
 public abstract class BaseApiController : BaseController
 {
    
 }
 
-//[EnableCors("Admin")]
+[EnableCors("Admin")]
 [Route("admin/[controller]")]
-//[Authorize(Policy = "Admin")]
+[Authorize(Policy = "Admin")]
 public class BaseAdminController : BaseController
 {
    protected void ValidateRequest(AdminRequest model, AdminSettings adminSettings)

@@ -11,9 +11,11 @@ using ApplicationCore.Helpers;
 using Web.Models;
 using ApplicationCore.Exceptions;
 using ApplicationCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace Web.Controllers;
 
+[EnableCors("Global")]
 public class AuthController : BaseController
 {
 	private readonly IUsersService _usersService;
@@ -38,14 +40,14 @@ public class AuthController : BaseController
 		var user = await _usersService.FindByEmailAsync(request.Username);
 		if(user is null)
 		{
-			ModelState.AddModelError("", "身分驗證失敗. 請重新登入.");
+			ModelState.AddModelError("", "身分驗證失敗, 請重新登入.");
 			return BadRequest(ModelState);
 		}
 
 		bool isValid = await _usersService.CheckPasswordAsync(user, request.Password);
 		if(!isValid)
 		{
-			ModelState.AddModelError("", "身分驗證失敗. 請重新登入.");
+			ModelState.AddModelError("", "身分驗證失敗, 請重新登入.");
 			return BadRequest(ModelState);
 		}
 

@@ -26,6 +26,10 @@ public static class ClaimsHelpers
 			claims.Add(new Claim(JwtClaimIdentifiers.Picture, oAuth.PictureUrl.GetString()));
 			claims.Add(new Claim(JwtClaimIdentifiers.Name, oAuth.GivenName.GetString()));
 		}
+		else 
+		{
+         claims.Add(new Claim(JwtClaimIdentifiers.Name, user.Name));
+      }
 		
 		return claims;
 	}
