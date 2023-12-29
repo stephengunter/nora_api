@@ -19,5 +19,6 @@ public class UserViewModel
 
 	
 	public string? Roles { get; set; }
+
 	public bool HasPassword { get; set; }
 }

@@ -1,17 +1,13 @@
-using ApplicationCore.Exceptions;
 using ApplicationCore.Services;
-using ApplicationCore.Settings;
 using ApplicationCore.Views;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using AutoMapper;
 using ApplicationCore.DtoMapper;
 using Web.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
-using ApplicationCore.Authorization;
 
-namespace Web.Controllers.Api;
+namespace Web.Controllers;
 
 [EnableCors("Global")]
 [Authorize]
@@ -26,12 +22,12 @@ public class ProfilesController : BaseController
       _mapper = mapper;
    }
 
-   [HttpGet("id")]
+   [HttpGet("{id}")]   
    public async Task<ActionResult<UserViewModel>> Get(string id)
    {
       var user = await _usersService.FindByIdAsync(id);
-      if(user == null) return NotFound();
-      
+      if (user == null) return NotFound();
+
       CheckCurrentUser(user);
 
       var roles = await _usersService.GetRolesAsync(user);
@@ -40,20 +36,19 @@ public class ProfilesController : BaseController
       return model;
    }
 
-   [HttpPut("id")]
+   [HttpPut("{id}")]
    public async Task<IActionResult> Update(string id, UserViewModel model)
    {
-      var user = await _usersService.FindByIdAsync(id);      
-      if(user == null) return NotFound();
+      var user = await _usersService.FindByIdAsync(id);
+      if (user == null) return NotFound();
 
-      if(String.IsNullOrEmpty(model.Name)) ModelState.AddModelError("name", "name can not be empty!");
-      if(!ModelState.IsValid) return BadRequest(ModelState);
+      if (String.IsNullOrEmpty(model.Name)) ModelState.AddModelError("name", "name can not be empty!");
+      if (!ModelState.IsValid) return BadRequest(ModelState);
 
       user.Name = model.Name!;
       user.PhoneNumber = model.PhoneNumber;
 
-      await _usersService.UpdateAsync(user);
-      
+      await _usersService.UpdateAsync(user);      
       return NoContent();
    }
 

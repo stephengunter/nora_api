@@ -54,8 +54,7 @@ public class AdminsController : BaseAdminController
 
       if(request.Cmd!.EqualTo(AdminCmds.SetPassword))
       {
-         if(String.IsNullOrEmpty(request.Data)) ModelState.AddModelError("data", "Password Can Not Be Empty.");
-         else await SetPasswordAsync(request);
+         
       }
       else
       {
@@ -87,13 +86,6 @@ public class AdminsController : BaseAdminController
       if(!isAdmin) throw new AdminSettingsException($"User {user.Name} Has No Admin Roles!");
 
       return user;
-   }
-
-   async Task SetPasswordAsync(AdminRequest request)
-   {
-      var user = await CheckAdminUserAsync();
-      string pw = request.Data!;
-      await _usersService.AddPasswordAsync(user, pw);
    }
 
 }

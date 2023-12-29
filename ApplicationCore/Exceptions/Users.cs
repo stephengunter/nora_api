@@ -25,11 +25,3 @@ public class UserNotFoundException : Exception
 
 	}
 }
-
-public class UserSetPasswordException : Exception
-{
-	public UserSetPasswordException(User user, string msg = "") : base($"Set User Password Failed. UserName: {user.UserName} , {msg}")
-	{
-		
-	}
-}

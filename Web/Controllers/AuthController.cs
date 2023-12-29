@@ -1,8 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ApplicationCore.Views;
+﻿using Microsoft.AspNetCore.Mvc;
 using ApplicationCore.Models;
-using ApplicationCore.Auth;
 using ApplicationCore.Services;
 using Microsoft.Extensions.Options;
 using ApplicationCore.Settings;
@@ -38,7 +35,7 @@ public class AuthController : BaseController
 		if(!ModelState.IsValid) return BadRequest(ModelState);
 
 		var user = await _usersService.FindByEmailAsync(request.Username);
-		if(user is null)
+		if(user == null)
 		{
 			ModelState.AddModelError("", "身分驗證失敗, 請重新登入.");
 			return BadRequest(ModelState);

@@ -13,6 +13,7 @@ using ApplicationCore.DI;
 using Web.Filters;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Builder;
 
 Log.Logger = new LoggerConfiguration()
 	.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
@@ -62,11 +63,11 @@ try
 
 	#region AddFilters
 	builder.Services.AddScoped<DevelopmentOnlyFilter>();
-	#endregion
-	
-	builder.Services.AddJwtBearer(Configuration);
-	builder.Services.AddAuthorizationPolicy();
-	builder.Services.AddCorsPolicy(Configuration);
+   #endregion
+
+   builder.Services.AddCorsPolicy(Configuration);
+   builder.Services.AddJwtBearer(Configuration);   
+   builder.Services.AddAuthorizationPolicy();
 	builder.Services.AddDtoMapper();
 
 	builder.Services.AddControllers()
@@ -107,9 +108,12 @@ try
 	{
 		app.UseHttpsRedirection();
 	}
-	
-	app.UseCors();
-	app.UseAuthentication();
+   //app.UseStaticFiles();
+   //app.UseRouting();
+
+   
+   app.UseCors();
+   app.UseAuthentication();
    app.UseAuthorization();
 
 	app.MapControllers();

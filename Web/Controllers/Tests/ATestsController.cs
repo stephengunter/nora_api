@@ -8,30 +8,33 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Web.Models;
 using Azure.Core;
+using Microsoft.AspNetCore.Identity;
 
 namespace Web.Controllers.Tests;
 
 public class ATestsController : BaseTestController
 {
    private readonly IUsersService _usersService;
+   private readonly UserManager<User> _userManager;
    private readonly AppSettings _appSettings;
-   private readonly IJwtTokenService _jwtTokenService;
-	private readonly IOAuthService _oAuthService;
 
-   public ATestsController(IUsersService usersService, IOptions<AppSettings> appSettings)
+   public ATestsController(IUsersService usersService, UserManager<User> userManager, IOptions<AppSettings> appSettings)
    {
       _usersService = usersService;
+      _userManager = userManager;
       _appSettings = appSettings.Value;
    }
 
    [HttpGet]
    public async Task<ActionResult> Index()
    {
-      var user = await _usersService.FindByEmailAsync("stephen@gmail.com");
+      var user = await _usersService.FindByEmailAsync("traders.com.tw@gmail.com");
       if (user == null) return NotFound();
 
-      await _usersService.AddPasswordAsync(user, "79@Stephen");
-      return Ok();
+      bool result = await _usersService.HasPasswordAsync(user);
+      return Ok(result);
+
+      
    }
 
    [HttpGet("version")]

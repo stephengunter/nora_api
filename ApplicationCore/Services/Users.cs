@@ -35,17 +35,9 @@ public interface IUsersService
 
 	#region Check
 	Task<bool> IsAdminAsync(User user);
-	
-	#endregion
-
-	#region Passwords
-	Task<bool> HasPasswordAsync(User user);
-	Task<bool> CheckPasswordAsync(User user, string password);
-	Task AddPasswordAsync(User user, string password);
-	Task ChangePasswordAsync(User user, string token, string pw);
-
-	
-	#endregion
+   Task<bool> HasPasswordAsync(User user);
+   Task<bool> CheckPasswordAsync(User user, string password);
+   #endregion
 }
 
 public class UsersService : IUsersService
@@ -139,48 +131,19 @@ public class UsersService : IUsersService
 
 		return match != null;
 	}
-	
-	#endregion
+   public async Task<bool> HasPasswordAsync(User user)
+      => await _userManager.HasPasswordAsync(user);
 
-	#region Passwords
-	public async Task<bool> HasPasswordAsync(User user) 
-		=> await _userManager.HasPasswordAsync(user);
+   public async Task<bool> CheckPasswordAsync(User user, string password)
+      => await _userManager.CheckPasswordAsync(user, password);
+   #endregion
 
-	public async Task<bool> CheckPasswordAsync(User user, string password) 
-		=> await _userManager.CheckPasswordAsync(user, password);
 
-	public async Task AddPasswordAsync(User user, string password)
-	{
-		var result = await _userManager.AddPasswordAsync(user, password);
-		if (!result.Succeeded)
-		{
-			var error = result.Errors.FirstOrDefault();
-			string msg = $"{error!.Code} : {error!.Description}" ?? string.Empty;
 
-			throw new UserSetPasswordException(user, msg);
-		}
-	}
-	public async Task ChangePasswordAsync(User user, string token, string pw)
-	{
-		var result = await _userManager.ChangePasswordAsync(user, token, pw);
-		if(!result.Succeeded)
-		{
-			var error = result.Errors.FirstOrDefault();
-			string msg = $"{error!.Code} : {error!.Description}" ?? string.Empty;
 
-			throw new UserSetPasswordException(user, msg);
-		}
-	}
-	
-	#endregion
-	
 
-	
 
-	
 
-	
 
-	
 
 }

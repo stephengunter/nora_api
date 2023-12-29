@@ -24,14 +24,14 @@ public class OAuthController : BaseController
 
 
 	[HttpPost("google")]
-	public async Task<ActionResult> Google([FromBody] OAuthLoginRequest model)
+	public async Task<ActionResult<AuthResponse>> Google([FromBody] OAuthLoginRequest model)
 	{
 		var payload = await GoogleJsonWebSignature.ValidateAsync(model.Token, new GoogleJsonWebSignature.ValidationSettings());
 		
 		var user = await _usersService.FindByEmailAsync(payload.Email);
 
-		if (user == null)
-		{
+      if (user == null)
+      {
          user = await _usersService.CreateAsync(new User
          {
             Email = payload.Email,
@@ -64,10 +64,9 @@ public class OAuthController : BaseController
 
 		var accessToken = await _jwtTokenService.CreateAccessTokenAsync(RemoteIpAddress, user, roles, oAuth);
 		string refreshToken = await _jwtTokenService.CreateRefreshTokenAsync(RemoteIpAddress, user);
-
-		var response = new AuthResponse(accessToken.Token, accessToken.ExpiresIn, refreshToken);
-		return Ok(response);
-	}
+		
+      return new AuthResponse(accessToken.Token, accessToken.ExpiresIn, refreshToken);
+   }
 
 
 }

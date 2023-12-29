@@ -1,52 +1,62 @@
-using ApplicationCore.Exceptions;
-using ApplicationCore.Services;
-using ApplicationCore.Settings;
-using ApplicationCore.Views;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using AutoMapper;
-using ApplicationCore.DtoMapper;
 using Web.Models;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
+using ApplicationCore.Models;
+using Microsoft.AspNetCore.Identity;
 
-namespace Web.Controllers.Api;
+namespace Web.Controllers;
 
 [EnableCors("Global")]
-public class PasswordsController : BaseApiController
+[Authorize]
+public class PasswordsController : BaseController
 {
-   private readonly IUsersService _usersService;
+   private readonly UserManager<User> _userManager;
 
-   public PasswordsController(IUsersService usersService)
+   public PasswordsController(UserManager<User> userManager)
    {
-      _usersService = usersService;
+      _userManager = userManager;
    }
 
    [HttpPost]
    public async Task<ActionResult> Store(SetPasswordRequest request)
    {
-      string id = "a906b84f-5825-4528-990b-bd7e6a3a6413";
-      var user = await _usersService.FindByIdAsync(id);
-      if(user == null) return NotFound();
+      var user = await _userManager.FindByIdAsync(request.UserId);
+      if (user == null) return NotFound();
 
-      if(String.IsNullOrEmpty(request.Password)) ModelState.AddModelError("password", "Password Can Not Be Empty.");
-      if(!ModelState.IsValid) return BadRequest(ModelState);
+      CheckCurrentUser(user);
 
-      await _usersService.AddPasswordAsync(user, request.Password);
-      return Ok();
+      if (String.IsNullOrEmpty(request.Password)) ModelState.AddModelError("password", "Password Can Not Be Empty.");
+      if (!ModelState.IsValid) return BadRequest(ModelState);
+
+      var result = await _userManager.AddPasswordAsync(user, request.Password);
+      if (result.Succeeded) return Ok();
+
+      //var error = result.Errors.FirstOrDefault();
+      //string msg = $"{error!.Code} : {error!.Description}" ?? string.Empty;
+      ModelState.AddModelError("", "密碼設定失敗");
+      return BadRequest(ModelState);
    }
 
    [HttpPut("{id}")]
    public async Task<IActionResult> Update(string id, SetPasswordRequest request)
    {
-      var user = await _usersService.FindByIdAsync(id);
+      var user = await _userManager.FindByIdAsync(id);
       if(user == null) return NotFound();
 
-      if(String.IsNullOrEmpty(request.Password)) ModelState.AddModelError("password", "Password Can Not Be Empty.");      
-      if(String.IsNullOrEmpty(request.Token)) ModelState.AddModelError("token", "token can not be empty!");
-      if(!ModelState.IsValid) return BadRequest(ModelState);
+      CheckCurrentUser(user);
 
-      await _usersService.ChangePasswordAsync(user, request.Token, request.Password);
-      return NoContent();
+      if (String.IsNullOrEmpty(request.Password)) ModelState.AddModelError("password", "Password Can Not Be Empty.");
+      if (String.IsNullOrEmpty(request.Token)) ModelState.AddModelError("token", "token can not be empty!");
+      if (!ModelState.IsValid) return BadRequest(ModelState);
+
+      var result = await _userManager.ChangePasswordAsync(user, request.Token, request.Password);
+      if (result.Succeeded) return NoContent();
+
+      //var error = result.Errors.FirstOrDefault();
+      //string msg = $"{error!.Code} : {error!.Description}" ?? string.Empty;
+      ModelState.AddModelError("", "密碼變更失敗");
+      return BadRequest(ModelState);
    }
 
 }
