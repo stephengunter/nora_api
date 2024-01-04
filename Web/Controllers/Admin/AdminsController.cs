@@ -32,6 +32,10 @@ public class AdminsController : BaseAdminController
    [ServiceFilter(typeof(DevelopmentOnlyFilter))]   
    public async Task<ActionResult<UserViewModel>> Get()
    {
+      if (User.Claims.IsNullOrEmpty())
+      { 
+      
+      }
       ValidateSettings();
       if(!ModelState.IsValid) return BadRequest(ModelState);
 

@@ -67,7 +67,7 @@ public static class JwtBearerDI
 
 			RequireExpirationTime = false,
 			ValidateLifetime = true,
-			ClockSkew = TimeSpan.Zero
+			ClockSkew = TimeSpan.Zero			
 		};
 
 		services.AddAuthentication(options =>

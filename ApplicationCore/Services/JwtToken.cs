@@ -41,7 +41,7 @@ public class JwtTokenService : IJwtTokenService
 		_refreshTokenRepository = refreshTokenRepository;
 	}
 
-	int RefreshTokenDaysToExpire => _authSettings.RefreshTokenDaysToExpire < 1 ? 5 : _authSettings.RefreshTokenDaysToExpire;
+	int RefreshTokenDaysToExpire => _authSettings.RefreshTokenDaysToExpire < 1 ? 7 : _authSettings.RefreshTokenDaysToExpire;
 
 	string SecretKey => _authSettings.SecurityKey;	
 	

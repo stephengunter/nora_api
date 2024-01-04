@@ -14,6 +14,8 @@ using Web.Filters;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Builder;
+using ApplicationCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 Log.Logger = new LoggerConfiguration()
 	.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
@@ -68,8 +70,8 @@ try
    builder.Services.AddCorsPolicy(Configuration);
    builder.Services.AddJwtBearer(Configuration);   
    builder.Services.AddAuthorizationPolicy();
-	builder.Services.AddDtoMapper();
-
+   
+   builder.Services.AddDtoMapper();
 	builder.Services.AddControllers()
 	.AddJsonOptions(options =>
         {

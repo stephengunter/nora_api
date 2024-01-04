@@ -5,69 +5,85 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using ApplicationCore.Authorization;
 using ApplicationCore.Helpers;
+using ApplicationCore.Consts;
+using System.Security.Principal;
 
 
 namespace ApplicationCore.Auth;
 public interface IJwtFactory
 {
-	Task<AccessToken> GenerateEncodedTokenAsync(User user, IList<string>? roles, OAuth? oAuth = null);
+   Task<AccessToken> GenerateEncodedTokenAsync(User user, IList<string>? roles, OAuth? oAuth = null);
 }
 
 
 public class JwtFactory : IJwtFactory
 {
-	private readonly IJwtTokenHandler _jwtTokenHandler;
-	private readonly JwtIssuerOptions _jwtOptions;
+   private readonly IJwtTokenHandler _jwtTokenHandler;
+   private readonly JwtIssuerOptions _jwtOptions;
 
-	internal JwtFactory(IJwtTokenHandler jwtTokenHandler, IOptions<JwtIssuerOptions> jwtOptions)
-	{
-		_jwtTokenHandler = jwtTokenHandler;
-		_jwtOptions = jwtOptions.Value;
-		ThrowIfInvalidOptions(_jwtOptions);
-	}
+   internal JwtFactory(IJwtTokenHandler jwtTokenHandler, IOptions<JwtIssuerOptions> jwtOptions)
+   {
+      _jwtTokenHandler = jwtTokenHandler;
+      _jwtOptions = jwtOptions.Value;
+      ThrowIfInvalidOptions(_jwtOptions);
+   }
 
-	public async Task<AccessToken> GenerateEncodedTokenAsync(User user, IList<string>? roles, OAuth? oAuth = null)
-	{
-		if (roles.IsNullOrEmpty()) roles = new List<string>();
+   public async Task<AccessToken> GenerateEncodedTokenAsync(User user, IList<string>? roles, OAuth? oAuth = null)
+   {
+      var claims = new List<Claim>()
+      {
+         new Claim(JwtClaimIdentifiers.Sub, user.UserName!),
+         new Claim(JwtClaimIdentifiers.Roles, roles.JoinToString()),
+         new Claim(JwtClaimIdentifiers.Id, user.Id),
+         new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
+         new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64)
+      };
 
-		var claims = user.CreateClaims(roles!, oAuth);
-		claims.Append(new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()));
-		claims.Append(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(_jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64));
-		
-		// Create the JWT security token and encode it.
-		var jwt = new JwtSecurityToken(
-			 _jwtOptions.Issuer,
-			 _jwtOptions.Audience,
-			 claims,
-			 _jwtOptions.NotBefore,
-			 _jwtOptions.Expiration,
-			 _jwtOptions.SigningCredentials);
+      if (oAuth != null)
+      {
+         claims.Add(new Claim(JwtClaimIdentifiers.Provider, oAuth.Provider.ToString()));
+         claims.Add(new Claim(JwtClaimIdentifiers.Picture, oAuth.PictureUrl.GetString()));
+         claims.Add(new Claim(JwtClaimIdentifiers.Name, oAuth.GivenName.GetString()));
+      }
+      else
+      {
+         claims.Add(new Claim(JwtClaimIdentifiers.Name, user.Name));
+      }
 
-		return new AccessToken(_jwtTokenHandler.WriteToken(jwt), (int)_jwtOptions.ValidFor.TotalSeconds);
+      // Create the JWT security token and encode it.
+      var jwt = new JwtSecurityToken(
+          _jwtOptions.Issuer,
+          _jwtOptions.Audience,
+          claims,
+          _jwtOptions.NotBefore,
+          _jwtOptions.Expiration,
+          _jwtOptions.SigningCredentials);
 
-	}
-	private static long ToUnixEpochDate(DateTime date)
-	  => (long)Math.Round((date.ToUniversalTime() -
-								  new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
-								 .TotalSeconds);
+      return new AccessToken(_jwtTokenHandler.WriteToken(jwt), (int)_jwtOptions.ValidFor.TotalSeconds);
 
-	private static void ThrowIfInvalidOptions(JwtIssuerOptions options)
-	{
-		if (options == null) throw new ArgumentNullException(nameof(options));
+   }
+   private static long ToUnixEpochDate(DateTime date)
+     => (long)Math.Round((date.ToUniversalTime() -
+                          new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
+                         .TotalSeconds);
 
-		if (options.ValidFor <= TimeSpan.Zero)
-		{
-			throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(JwtIssuerOptions.ValidFor));
-		}
+   private static void ThrowIfInvalidOptions(JwtIssuerOptions options)
+   {
+      if (options == null) throw new ArgumentNullException(nameof(options));
 
-		if (options.SigningCredentials == null)
-		{
-			throw new ArgumentNullException(nameof(JwtIssuerOptions.SigningCredentials));
-		}
+      if (options.ValidFor <= TimeSpan.Zero)
+      {
+         throw new ArgumentException("Must be a non-zero TimeSpan.", nameof(JwtIssuerOptions.ValidFor));
+      }
 
-		if (options.JtiGenerator == null)
-		{
-			throw new ArgumentNullException(nameof(JwtIssuerOptions.JtiGenerator));
-		}
-	}
+      if (options.SigningCredentials == null)
+      {
+         throw new ArgumentNullException(nameof(JwtIssuerOptions.SigningCredentials));
+      }
+
+      if (options.JtiGenerator == null)
+      {
+         throw new ArgumentNullException(nameof(JwtIssuerOptions.JtiGenerator));
+      }
+   }
 }

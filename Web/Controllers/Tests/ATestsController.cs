@@ -9,6 +9,9 @@ using Microsoft.Extensions.Options;
 using Web.Models;
 using Azure.Core;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using ApplicationCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Web.Controllers.Tests;
 
@@ -28,11 +31,11 @@ public class ATestsController : BaseTestController
    [HttpGet]
    public async Task<ActionResult> Index()
    {
-      var user = await _usersService.FindByEmailAsync("traders.com.tw@gmail.com");
-      if (user == null) return NotFound();
+      var x = User.Claims.IsNullOrEmpty();
+      var Roles = User.Roles();
+      var IsDev = User.IsDev();
 
-      bool result = await _usersService.HasPasswordAsync(user);
-      return Ok(result);
+      return Ok(Roles.JoinToString() + "," + IsDev);
 
       
    }

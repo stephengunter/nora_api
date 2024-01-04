@@ -60,22 +60,22 @@ public class AuthController : BaseController
 	[HttpPut("{id}")]
 	public async Task<ActionResult<AuthResponse>> RefreshToken(string id, [FromBody] RefreshTokenRequest request)
 	{
-		var user = await _usersService.FindByIdAsync(id);
+      var user = await _usersService.FindByIdAsync(id);
 		if(user is null) return NotFound();
 
-		var cp = _jwtTokenService.ResolveClaimsFromToken(request.AccessToken);
+      var cp = _jwtTokenService.ResolveClaimsFromToken(request.AccessToken);
 		if(cp is null) throw new TokenResolveFailedException();
 		if(cp.Claims.IsNullOrEmpty()) throw new TokenResolveFailedException("Claims IsNullOrEmpty!");
-		if(cp.Claims.UserId() != id) throw new RefreshTokenFailedException($"User Id Not Equals To Put Id: {id}");
+      if (cp.Id() != id) throw new RefreshTokenFailedException($"User Id Not Equals To Put Id: {id}");
 		
 		await ValidateRequestAsync(request, user);
 		if (!ModelState.IsValid) return BadRequest(ModelState);		
 		
 		OAuth? oauth = null;
-		if(cp.Claims.Provider() != OAuthProvider.Unknown)
+		if(cp.Provider() != OAuthProvider.Unknown)
 		{
-			oauth = await _oAuthService.FindByProviderAsync(user, cp.Claims.Provider());
-			if(oauth is null)  throw new RefreshTokenFailedException($"OAuth NotFound By Provider: {cp.Claims.Provider().ToString()}");
+			oauth = await _oAuthService.FindByProviderAsync(user, cp.Provider());
+			if(oauth is null)  throw new RefreshTokenFailedException($"OAuth NotFound By Provider: {cp.Provider().ToString()}");
 		}		
 		
 		var roles = await _usersService.GetRolesAsync(user);

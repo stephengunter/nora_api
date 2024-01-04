@@ -17,11 +17,12 @@ public abstract class BaseController : ControllerBase
    
    protected void CheckCurrentUser(User user)
    {
-      string id = User.Claims.UserId();
+      string id = User.Id();
       if(String.IsNullOrEmpty(id)) throw new CurrentUserIdNotFoundException();
       if(id != user.Id) throw new CurrentUserIdNotEqualToRequestUserIdException();
    }
 }
+
 
 [EnableCors("Api")]
 [Route("api/[controller]")]
