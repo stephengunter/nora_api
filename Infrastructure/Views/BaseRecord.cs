@@ -13,9 +13,9 @@ public abstract class BaseRecordView
 
 	public virtual string StatusText => this.Active ? "上架中" : "已下架";
 
-	public string CreatedAtText => CreatedAt.ToString("yyyy-MM-dd HH:mm:ss");
+	public string CreatedAtText { get; set; } = string.Empty;
 
-	public string LastUpdatedText => LastUpdated.HasValue ? Convert.ToDateTime(LastUpdated).ToString("yyyy-MM-dd HH:mm:ss") : String.Empty;
+   public string LastUpdatedText { get; set; } = string.Empty;
 
 	public void SetUpdated(string userId)
 	{

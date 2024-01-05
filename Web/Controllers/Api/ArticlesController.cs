@@ -1,36 +1,53 @@
-using ApplicationCore.Exceptions;
+
 using ApplicationCore.Services;
-using ApplicationCore.Settings;
-using ApplicationCore.Views;
-using ApplicationCore.Helpers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using ApplicationCore.Helpers;
 using AutoMapper;
-using ApplicationCore.DtoMapper;
-using Web.Filters;
-using Web.Models;
-using ApplicationCore.Consts;
 using ApplicationCore.Models;
+using ApplicationCore.Views;
 
-namespace Web.Controllers.Api;
-
-public class ArticlesController : BaseApiController
+namespace Web.Controllers.Api
 {
-  
-   private readonly IMapper _mapper;
-
-  
-   public ArticlesController(IMapper mapper)
+   
+   public class ArticlesController : BaseApiController
    {
-     
-      _mapper = mapper;
+      private readonly IArticlesService _articlesService;
+      private readonly IUsersService _usersService;
+      private readonly IMapper _mapper;
+
+      public ArticlesController(IArticlesService articlesService, IMapper mapper)
+      {
+         _articlesService = articlesService;
+         _mapper = mapper;
+      }
+
+
+      [HttpGet("")]
+      public async Task<ActionResult<IEnumerable<ArticleViewModel>>> Index(int page = 1, int pageSize = 99)
+      {
+         if (page < 1) page = 1;
+
+         var articles = await _articlesService.FetchAllAsync();
+
+         articles = articles.Where(x => x.Active);
+
+         articles = articles.GetOrdered().GetPaged(page, pageSize);
+
+         return articles.MapViewModelList(_mapper);
+      }
+
+
+      [HttpGet("{id}")]
+      public async Task<ActionResult<ArticleViewModel>> Details(int id)
+      {
+         var article = await _articlesService.GetByIdAsync(id);
+         if (article == null) return NotFound();
+         if (!article.Active) return NotFound();
+
+         return article.MapViewModel(_mapper);
+      }
+
    }
 
-   [HttpGet("id")]
-   public async Task<ActionResult> Get(int id)
-   {
-      
-      return Ok("api/articles" + id.ToString());
-   }
 
 }

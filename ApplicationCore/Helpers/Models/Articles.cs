@@ -10,12 +10,8 @@ public static class ArticleHelpers
    public static ArticleViewModel MapViewModel(this Article article, IMapper mapper)
    {
       var model = mapper.Map<ArticleViewModel>(article);
-      if (String.IsNullOrEmpty(model.Summary))
-      {
-         var content = article.Content!.RemoveSciptAndHtmlTags();
-         model.Summary = content.Substring(0, Math.Min(content.Length, 120));
-         model.Summary += "...";
-      }
+      model.SetBaseRecordViewValues();
+      
       return model;
    }
 
@@ -36,7 +32,7 @@ public static class ArticleHelpers
       if (entity == null) entity = mapper.Map<ArticleViewModel, Article>(model);
       else entity = mapper.Map<ArticleViewModel, Article>(model, entity);
 
-      entity.CheckActiveOrder(model);
+      entity.SetBaseRecordValues(model);
 
       if (model.Id == 0) entity.SetCreated(currentUserId);
       else entity.SetUpdated(currentUserId);

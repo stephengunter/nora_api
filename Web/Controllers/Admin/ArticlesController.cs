@@ -86,7 +86,7 @@ public class ArticlesController : BaseAdminController
 
       await _articlesService.UpdateAsync(article);
 
-      return Ok();
+      return NoContent();
    }
 
    void ValidateRequest(ArticleViewModel model)
